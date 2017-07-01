@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.vaxapp.calellaweather.YahooWeatherFragment"
+    >
+    
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="description"
+        />
+    
+    <TextView
+        android:id="@+id/latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        tools:text="latitude: 41.2"
+        />
+    
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        tools:text="longitude: 2.2"
+        />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        >
+    
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="15"
+            android:textSize="30sp"
+            android:layout_gravity="center_horizontal"
+            />
+    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical"
+            >
+    
+            <TextView
+                android:id="@+id/weather_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Partly cloudy"
+                />
+    
+            <TextView
+                android:id="@+id/unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/celcius_unit"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
