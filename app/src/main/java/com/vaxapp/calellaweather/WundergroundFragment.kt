@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.vaxapp.calellaweather.data.ServiceFactory
-import com.vaxapp.calellaweather.data.yahoo.YahooWeatherService
+import com.vaxapp.calellaweather.data.yahoo.WundergroundService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -15,11 +15,11 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import org.jetbrains.anko.info
 
-class YahooWeatherFragment : Fragment() {
+class WundergroundFragment : Fragment() {
 
     val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private val log = AnkoLogger("YahooWeatherFragment")
+    private val log = AnkoLogger("WundergroundFragment")
 
     private var description: TextView? = null
     private var latitude: TextView? = null
@@ -42,22 +42,21 @@ class YahooWeatherFragment : Fragment() {
         weatherText = view!!.findViewById(R.id.weather_text) as TextView
 
         //TODO: find out about constants in Kotlin
-        val BASE_URL = "https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='calella')&format=json"
+        val BASE_URL = "http://api.wunderground.com/api/f3f2b65b7cdfaae9/geolookup/conditions/forecast/q/zmw:00000.327.08184.json"
 
-        compositeDisposable.add(ServiceFactory.createRetrofitService("https://query.yahooapis.com/v1/public/yql/",
-                YahooWeatherService::class.java).getWeatherInfo(BASE_URL)
+        compositeDisposable.add(ServiceFactory.createRetrofitService("http://api.wunderground.com/api/f3f2b65b7cdfaae9/geolookup/conditions/forecast/q/",
+                WundergroundService::class.java).getWeatherInfo(BASE_URL)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     result ->
-                    description!!.text = result.query.results.channel.title
-                    latitude!!.text = result.query.results.channel.item.lat
-                    longitude!!.text = result.query.results.channel.item.long
-                    val temperatureInFahrenheit = result.query.results.channel.item.condition.temp.toInt()
-                    temperature!!.text = ((temperatureInFahrenheit - 32) * 5 / 9).toString()
-                    weatherText!!.text = result.query.results.channel.item.condition.text
-                    log.info("Got weather string " + result.query.results.channel.item.condition.toString())
-
+                    val display_location = result.current_observation.display_location
+                    description!!.text = "Weather Underground - "+display_location.city + ", " + display_location.state + ", " + display_location.country_iso3166
+                    latitude!!.text = display_location.latitude
+                    longitude!!.text = display_location.longitude
+                    temperature!!.text = result.current_observation.temp_c.toString()
+                    weatherText!!.text = result.current_observation.weather
+                    log.info("got weather data" + result.toString())
                 }, { error ->
                     log.error("error getting weather", error.cause)
                 }))
@@ -76,8 +75,8 @@ class YahooWeatherFragment : Fragment() {
          */
         private val ARG_SECTION_NUMBER = "section_number"
 
-        fun newInstance(sectionNumber: Int): YahooWeatherFragment {
-            val fragment = YahooWeatherFragment()
+        fun newInstance(sectionNumber: Int): WundergroundFragment {
+            val fragment = WundergroundFragment()
             val args = Bundle()
             args.putInt(ARG_SECTION_NUMBER, sectionNumber)
             fragment.arguments = args

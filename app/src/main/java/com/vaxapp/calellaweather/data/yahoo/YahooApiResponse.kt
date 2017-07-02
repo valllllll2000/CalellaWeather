@@ -1,4 +1,4 @@
-package com.vaxapp.calellaweather.data
+package com.vaxapp.calellaweather.data.yahoo
 
 data class Response(
         val query: Query

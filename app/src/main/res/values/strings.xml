@@ -3,4 +3,5 @@
     <string name="action_search">Search</string>
     <string name="yahoo_title">Yahoo</string>
     <string name="celcius_unit">Cº</string>
+    <string name="underground_title">Weather Underground</string>
 </resources>

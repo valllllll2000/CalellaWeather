@@ -8,7 +8,8 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 
 class WeatherActivity : AppCompatActivity() {
 
@@ -61,16 +62,21 @@ class WeatherActivity : AppCompatActivity() {
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-            return YahooWeatherFragment.newInstance(position + 1)
+            when (position) {
+                0 -> return YahooWeatherFragment.newInstance(position + 1)
+                1 -> return WundergroundFragment.newInstance(position + 1)
+            }
+            throw IllegalAccessException("wrong position " + position)
         }
 
         override fun getCount(): Int {
-            return 1
+            return 2
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
             when (position) {
                 0 -> return getString(R.string.yahoo_title)
+                1 -> return getString(R.string.underground_title)
             }
             return null
         }
