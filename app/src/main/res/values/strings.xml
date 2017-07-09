@@ -2,7 +2,7 @@
     <string name="app_name">CalellaWeather</string>
     <string name="action_search">Search</string>
     <string name="yahoo_title">Yahoo</string>
-    <string name="celcius_unit">Cº</string>
+    <string name="celsius_unit">Cº</string>
     <string name="underground_title">Weather Underground</string>
     <string name="open_weather_title">Open Weather</string>
 </resources>
