@@ -65,18 +65,20 @@ class WeatherActivity : AppCompatActivity() {
             when (position) {
                 0 -> return YahooWeatherFragment.newInstance(position + 1)
                 1 -> return WundergroundFragment.newInstance(position + 1)
+                2 -> return OpenWeatherMapFragment.newInstance(position + 1)
             }
             throw IllegalAccessException("wrong position " + position)
         }
 
         override fun getCount(): Int {
-            return 2
+            return 3
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
             when (position) {
                 0 -> return getString(R.string.yahoo_title)
                 1 -> return getString(R.string.underground_title)
+                2 -> return getString(R.string.open_weather_title)
             }
             return null
         }

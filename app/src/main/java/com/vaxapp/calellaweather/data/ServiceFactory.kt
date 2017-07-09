@@ -9,9 +9,6 @@ object ServiceFactory {
 
     fun <T> createRetrofitService(url: String, clazz: Class<T>): T {
         val client = OkHttpClient()
-//        val interceptor = HttpLoggingInterceptor()
-//        interceptor.level = HttpLoggingInterceptor.Level.BODY
-//        client.interceptors().add(interceptor)
         val retrofit = Retrofit.Builder().baseUrl(url)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
