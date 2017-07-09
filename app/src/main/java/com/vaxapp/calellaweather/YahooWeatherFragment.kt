@@ -17,15 +17,16 @@ import org.jetbrains.anko.info
 
 class YahooWeatherFragment : Fragment() {
 
-    val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val log = AnkoLogger("YahooWeatherFragment")
+    private val navigator = Navigator()
 
     private var description: TextView? = null
     private var latitude: TextView? = null
     private var longitude: TextView? = null
     private var temperature: TextView? = null
     private var weatherText: TextView? = null
+    private var attributionText: TextView? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.weather_fragment, container, false)
@@ -40,6 +41,12 @@ class YahooWeatherFragment : Fragment() {
         longitude = view!!.findViewById(R.id.longitude) as TextView
         temperature = view!!.findViewById(R.id.temperature) as TextView
         weatherText = view!!.findViewById(R.id.weather_text) as TextView
+        attributionText = view!!.findViewById(R.id.attribution) as TextView
+
+        attributionText!!.text = getString(R.string.powered_by, "Yahoo")
+        attributionText!!.setOnClickListener { navigator.viewUrl(activity, "https://www.yahoo.com/?ilc=401") }
+        //TODO: add yahoo logo
+        //https://developer.yahoo.com/attribution/
 
         //TODO: find out about constants in Kotlin
         val BASE_URL = "https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='calella')&format=json"
@@ -56,7 +63,7 @@ class YahooWeatherFragment : Fragment() {
                     val temperatureInFahrenheit = result.query.results.channel.item.condition.temp.toInt()
                     temperature!!.text = ((temperatureInFahrenheit - 32) * 5 / 9).toString()
                     weatherText!!.text = result.query.results.channel.item.condition.text
-                    log.info("Got weather string " + result.query.results.channel.item.condition.toString())
+                    log.info("""Got weather string ${result.query.results.channel.item.condition}""")
 
                 }, { error ->
                     log.error("error getting weather", error.cause)
@@ -64,7 +71,7 @@ class YahooWeatherFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        compositeDisposable.clear();
+        compositeDisposable.clear()
         super.onDestroy()
     }
 

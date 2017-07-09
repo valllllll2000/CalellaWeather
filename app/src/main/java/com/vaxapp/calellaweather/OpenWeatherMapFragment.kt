@@ -17,15 +17,17 @@ import org.jetbrains.anko.info
 
 class OpenWeatherMapFragment : Fragment() {
 
-    val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val log = AnkoLogger("OpenWeatherMapFragment")
+    private val navigator = Navigator()
 
     private var description: TextView? = null
     private var latitude: TextView? = null
     private var longitude: TextView? = null
     private var temperature: TextView? = null
     private var weatherText: TextView? = null
+    private var attributionText: TextView? = null
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.weather_fragment, container, false)
@@ -40,6 +42,10 @@ class OpenWeatherMapFragment : Fragment() {
         longitude = view!!.findViewById(R.id.longitude) as TextView
         temperature = view!!.findViewById(R.id.temperature) as TextView
         weatherText = view!!.findViewById(R.id.weather_text) as TextView
+        attributionText = view!!.findViewById(R.id.attribution) as TextView
+
+        attributionText!!.text = getString(R.string.powered_by, "OpenWeatherMap")
+        attributionText!!.setOnClickListener { navigator.viewUrl(activity, "https://openweathermap.org") }
 
         //TODO: find out about constants in Kotlin
         val BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=calella,es&APPID=0ff00eeffefffef8ff3144e9d539c3ec&units=metric"
@@ -50,7 +56,7 @@ class OpenWeatherMapFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     result ->
-                    description!!.text = result.name
+                    description!!.text = """Open Weather Map - ${result.name}"""
                     latitude!!.text = result.coord.lat.toString()
                     longitude!!.text = result.coord.lon.toString()
                     temperature!!.text = result.main.temp.toString()
@@ -58,7 +64,7 @@ class OpenWeatherMapFragment : Fragment() {
                     if (weatherList.isNotEmpty()) {
                         weatherText!!.text = weatherList[0].description
                     }
-                    log.info("Got weather string " + result.toString())
+                    log.info("""Got weather string ${result}""")
 
                 }, { error ->
                     log.error("error getting weather", error.cause)
@@ -66,7 +72,7 @@ class OpenWeatherMapFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        compositeDisposable.clear();
+        compositeDisposable.clear()
         super.onDestroy()
     }
 

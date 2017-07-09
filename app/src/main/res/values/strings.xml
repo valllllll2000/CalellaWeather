@@ -4,5 +4,6 @@
     <string name="yahoo_title">Yahoo</string>
     <string name="celsius_unit">Cº</string>
     <string name="underground_title">Weather Underground</string>
-    <string name="open_weather_title">Open Weather</string>
+    <string name="open_weather_title">Open Weather Map</string>
+    <string name="powered_by">Powered by %1$s</string>
 </resources>

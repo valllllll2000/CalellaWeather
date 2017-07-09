@@ -17,15 +17,16 @@ import org.jetbrains.anko.info
 
 class WundergroundFragment : Fragment() {
 
-    val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val log = AnkoLogger("WundergroundFragment")
+    private val navigator = Navigator()
 
     private var description: TextView? = null
     private var latitude: TextView? = null
     private var longitude: TextView? = null
     private var temperature: TextView? = null
     private var weatherText: TextView? = null
+    private var attributionText: TextView? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.weather_fragment, container, false)
@@ -40,8 +41,13 @@ class WundergroundFragment : Fragment() {
         longitude = view!!.findViewById(R.id.longitude) as TextView
         temperature = view!!.findViewById(R.id.temperature) as TextView
         weatherText = view!!.findViewById(R.id.weather_text) as TextView
+        attributionText = view!!.findViewById(R.id.attribution) as TextView
 
-        //TODO: find out about constants in Kotlin
+        attributionText!!.text = getString(R.string.powered_by, "Weather Underground")
+        attributionText!!.setOnClickListener { navigator.viewUrl(activity, "https://www.wunderground.com") }
+        //TODO: add Weather underground logo
+        //https://www.wunderground.com/weather/api/d/docs?d=resources/logo-usage-guide&MR=1
+
         val BASE_URL = "http://api.wunderground.com/api/f3f2b65b7cdfaae9/geolookup/conditions/forecast/q/zmw:00000.327.08184.json"
 
         compositeDisposable.add(ServiceFactory.createRetrofitService("http://api.wunderground.com/api/f3f2b65b7cdfaae9/geolookup/conditions/forecast/q/",
@@ -51,7 +57,7 @@ class WundergroundFragment : Fragment() {
                 .subscribe({
                     result ->
                     val display_location = result.current_observation.display_location
-                    description!!.text = "Weather Underground - "+display_location.city + ", " + display_location.state + ", " + display_location.country_iso3166
+                    description!!.text = "Weather Underground - " + display_location.city + ", " + display_location.state + ", " + display_location.country_iso3166
                     latitude!!.text = display_location.latitude
                     longitude!!.text = display_location.longitude
                     temperature!!.text = result.current_observation.temp_c.toString()
