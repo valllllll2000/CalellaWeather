@@ -29,9 +29,12 @@ class OpenWeatherMapFragment : Fragment() {
     private var attributionText: TextView? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater!!.inflate(R.layout.weather_fragment, container, false)
-        return rootView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.weather_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -45,7 +48,7 @@ class OpenWeatherMapFragment : Fragment() {
         attributionText = view!!.findViewById(R.id.attribution) as TextView
 
         attributionText!!.text = getString(R.string.powered_by, "OpenWeatherMap")
-        attributionText!!.setOnClickListener { navigator.viewUrl(activity, "https://openweathermap.org") }
+        attributionText!!.setOnClickListener { this.activity?.let { it1 -> navigator.viewUrl(it1, "https://openweathermap.org") } }
 
         //TODO: find out about constants in Kotlin
         val BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=calella,es&APPID=0ff00eeffefffef8ff3144e9d539c3ec&units=metric"
@@ -82,7 +85,7 @@ class OpenWeatherMapFragment : Fragment() {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private val ARG_SECTION_NUMBER = "section_number"
+        private const val ARG_SECTION_NUMBER = "section_number"
 
         fun newInstance(sectionNumber: Int): OpenWeatherMapFragment {
             val fragment = OpenWeatherMapFragment()

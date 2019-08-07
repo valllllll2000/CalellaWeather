@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 
 android {
   compileSdkVersion 27
-  buildToolsVersion '26.0.2'
   defaultConfig {
     applicationId "com.vaxapp.calellaweather"
     minSdkVersion 15
@@ -36,7 +35,7 @@ dependencies {
   compile 'com.android.support:support-vector-drawable:27.0.1'
   testCompile 'junit:junit:4.12'
 
-  compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
   compile "com.squareup.retrofit2:retrofit:2.3.0"
   compile "com.squareup.retrofit2:adapter-rxjava2:2.3.0"

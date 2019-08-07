@@ -28,9 +28,12 @@ class WundergroundFragment : Fragment() {
     private var weatherText: TextView? = null
     private var attributionText: TextView? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater!!.inflate(R.layout.weather_fragment, container, false)
-        return rootView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.weather_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -44,7 +47,7 @@ class WundergroundFragment : Fragment() {
         attributionText = view!!.findViewById(R.id.attribution) as TextView
 
         attributionText!!.text = getString(R.string.powered_by, "Weather Underground")
-        attributionText!!.setOnClickListener { navigator.viewUrl(activity, "https://www.wunderground.com") }
+        attributionText!!.setOnClickListener { activity?.let { it1 -> navigator.viewUrl(it1, "https://www.wunderground.com") } }
         //TODO: add Weather underground logo
         //https://www.wunderground.com/weather/api/d/docs?d=resources/logo-usage-guide&MR=1
 
@@ -62,7 +65,7 @@ class WundergroundFragment : Fragment() {
                     longitude!!.text = display_location.longitude
                     temperature!!.text = result.current_observation.temp_c.toString()
                     weatherText!!.text = result.current_observation.weather
-                    log.info("got weather data" + result.toString())
+                    log.info("got weather data $result")
                 }, { error ->
                     log.error("error getting weather", error.cause)
                 }))

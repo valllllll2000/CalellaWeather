@@ -28,9 +28,12 @@ class YahooWeatherFragment : Fragment() {
     private var weatherText: TextView? = null
     private var attributionText: TextView? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater!!.inflate(R.layout.weather_fragment, container, false)
-        return rootView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.weather_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -44,7 +47,7 @@ class YahooWeatherFragment : Fragment() {
         attributionText = view!!.findViewById(R.id.attribution) as TextView
 
         attributionText!!.text = getString(R.string.powered_by, "Yahoo")
-        attributionText!!.setOnClickListener { navigator.viewUrl(activity, "https://www.yahoo.com/?ilc=401") }
+        attributionText!!.setOnClickListener { activity?.let { it1 -> navigator.viewUrl(it1, "https://www.yahoo.com/?ilc=401") } }
         //TODO: add yahoo logo
         //https://developer.yahoo.com/attribution/
 
